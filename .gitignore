@@ -1,0 +1,40 @@
+# Node.js modules
+/node_modules/
+
+# Next.js build output
+/.next/
+/out/
+
+/static/
+
+# Log files
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Cache
+.next/
+
+# Optional: Build output for TypeScript projects (if applicable)
+/build/
+
+# Vercel and other deployment artifacts
+/.vercel/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE or editor directories and files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
