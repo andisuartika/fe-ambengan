@@ -11,7 +11,7 @@ export default async function DestinationDetailPage({ params }) {
   const destUrl = `${baseUrl}/destinations?village=${vilage}`;
 
   try {
-    const res = await fetch(`${baseUrl}/destination?code=${params.code}`, {
+    const res = await fetch(`${baseUrl}/destination?slug=${params.slug}`, {
       cache: "no-store",
     });
 

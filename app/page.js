@@ -10,6 +10,9 @@ const page = async () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const vilage = process.env.NEXT_PUBLIC_VILLAGE_CODE;
 
+  // const baseUrl = "http://best.test:8000/api";
+  // const vilage = "5108050003";
+
   const destUrl = `${baseUrl}/destinations?village=${vilage}`;
   const catUrl = `${baseUrl}/categories`;
   const accomUrl = `${baseUrl}/homestays?village=${vilage}`;
@@ -124,7 +127,7 @@ const page = async () => {
                       {dest.address || "Unknown"}
                     </span>
                     <h5>
-                      <Link href={`/destination/${dest.code}`}>
+                      <Link href={`/destination/${dest.slug}`}>
                         {dest.name}
                       </Link>
                     </h5>
