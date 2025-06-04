@@ -2,6 +2,8 @@ import SectionTitle from "@/components/SectionTitle";
 import Destination from "@/components/slider/Destination";
 import Subscribe from "@/components/Subscribe";
 import ReveloLayout from "@/layout/ReveloLayout";
+import BookingForm from "@/components/BookingForm";
+
 import Link from "next/link";
 
 export default async function DestinationDetailPage({ params }) {
@@ -23,7 +25,7 @@ export default async function DestinationDetailPage({ params }) {
       return (
         <div className="container mx-auto py-10 text-center">
           <h1 className="text-2xl font-bold">Destinasi tidak ditemukan.</h1>
-          <p>Kode destinasi tidak valid atau destinasi tidak tersedia.</p>
+          <p>Slug destinasi tidak valid atau destinasi tidak tersedia.</p>
         </div>
       );
     }
@@ -196,91 +198,191 @@ export default async function DestinationDetailPage({ params }) {
           </div>
         </div>
         {/* Destination Gallery End */}
-        {/* About Us Area start */}
-        <section className="about-us-area pt-90 pb-100 rel z-1">
+
+        {/* Destination Header Area start */}
+        <section className="tour-header-area pt-70 rel z-1">
           <div className="container">
-            <div className="row gap-100 align-items-center">
-              <div className="col-lg-6">
+            <div className="row justify-content-between">
+              <div className="col-xl-6 col-lg-7">
                 <div
-                  className="destination-details-content rmb-55"
+                  className="tour-header-content mb-15"
                   data-aos="fade-left"
                   data-aos-duration={1500}
                   data-aos-offset={50}
                 >
-                  <div className="section-title mb-25">
-                    <span className="h2 mb-15">Welcome to </span>
-                    <h2>{destination.name}</h2>
+                  <span className="location d-inline-block mb-10">
+                    <i className="fal fa-map-marker-alt" />{" "}
+                    {destination.address}
+                  </span>
+                  <div className="section-title pb-5">
+                    <h2>{destination.nam}</h2>
                   </div>
-                  <p>
-                    {destination.description.replace(/<\/?[^>]+(>|$)/g, "")}
-                  </p>
-                  <p>
-                    The island's rich cultural heritage is evident in numerous
-                    temples, including the iconic Tanah Lot and Uluwatu Temple,
-                    as well as the cultural
-                  </p>
-                  <Link
-                    href="destination-details"
-                    className="theme-btn mt-25 style-two"
-                  >
-                    <span data-hover="Explore Destinations">
-                      Explore Destinations
-                    </span>
-                    <i className="fal fa-arrow-right" />
-                  </Link>
+                  <div className="ratting">
+                    {Array.from({ length: 5 }).map((_, i) => {
+                      const index = i + 1;
+                      if (destination.rating >= index) {
+                        return <i key={i} className="fas fa-star" />;
+                      } else if (destination.rating >= index - 0.5) {
+                        return <i key={i} className="fas fa-star-half-alt" />;
+                      } else {
+                        return <i key={i} className="far fa-star" />;
+                      }
+                    })}
+                  </div>
                 </div>
               </div>
               <div
-                className="col-lg-6"
+                className="col-xl-4 col-lg-5 text-lg-end"
                 data-aos="fade-right"
                 data-aos-duration={1500}
                 data-aos-offset={50}
               >
-                <div className="destination-map">
-                  {destination.latitude && destination.longitude && (
-                    <div className="mt-8 mb-6">
-                      <h2 className="text-2xl font-semibold mb-4">Location</h2>
-                      <div
-                        className="map-container rounded-xl overflow-hidden"
-                        style={{ height: "400px" }}
-                      >
-                        <iframe
-                          src={`https://maps.google.com/maps?q=${destination.latitude},${destination.longitude}&z=15&output=embed`}
-                          style={{ border: 0, width: "100%", height: "100%" }}
-                          allowFullScreen=""
-                          loading="lazy"
-                          referrerPolicy="no-referrer-when-downgrade"
-                        />
+                <div className="tour-header-social mb-10">
+                  <a href="#">
+                    <i className="far fa-share-alt" />
+                    Share tours
+                  </a>
+                  <a href="#">
+                    <i className="fas fa-heart bgc-secondary" />
+                    Wish list
+                  </a>
+                </div>
+              </div>
+            </div>
+            <hr className="mt-50 mb-70" />
+          </div>
+        </section>
+        {/* Destination Header Area end */}
+        {/* Tour Details Area start */}
+        <section className="tour-details-page pb-100">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-8">
+                <div className="tour-details-content">
+                  <h3>Explore Destination</h3>
+                  <p>
+                    {destination.description.replace(/<\/?[^>]+(>|$)/g, "")}{" "}
+                  </p>
+                  <div className="row pb-55">
+                    <div className="col-md-6">
+                      <div className="tour-include-exclude mt-30">
+                        <h5>Facilities</h5>
+                        <ul className="list-style-one check mt-25">
+                          <li>
+                            <i className="far fa-check" /> Pick and Drop
+                            Services
+                          </li>
+                          {destination.facilities.map((item, index) => (
+                            <li>
+                              <i key={index} className="far fa-check" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     </div>
-                  )}
+                  </div>
+                </div>
+                <h3>Maps</h3>
+                <div className="tour-map mt-30 mb-50">
+                  <iframe
+                    src={`https://maps.google.com/maps?q=${destination.latitude},${destination.longitude}&z=14&output=embed`}
+                    style={{ border: 0, width: "100%" }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </div>
+                <h3>Reviews</h3>
+                <div className="comments mt-30 mb-60">
+                  {destination.reviews.map((item, index) => (
+                    <div
+                      className="comment-body"
+                      data-aos="fade-up"
+                      data-aos-duration={1500}
+                      data-aos-offset={50}
+                    >
+                      <div className="author-thumb">
+                        <img
+                          src="https://xsgames.co/randomusers/avatar.php?g=male"
+                          alt="Author"
+                        />
+                      </div>
+                      <div className="content">
+                        <h6>{item.name}</h6>
+                        <div className="ratting">
+                          {Array.from({ length: 5 }).map((_, i) => {
+                            const index = i + 1;
+                            if (item.rating >= index) {
+                              return <i key={i} className="fas fa-star" />;
+                            } else if (item.rating >= index - 0.5) {
+                              return (
+                                <i key={i} className="fas fa-star-half-alt" />
+                              );
+                            } else {
+                              return <i key={i} className="far fa-star" />;
+                            }
+                          })}
+                        </div>
+                        <span className="time">
+                          {new Date(item.created_at).toLocaleDateString(
+                            "id-ID",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )}
+                        </span>
+                        <p>{item.review.replace(/<\/?[^>]+(>|$)/g, "")}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="col-lg-4 col-md-8 col-sm-10 rmt-75">
+                <div className="blog-sidebar tour-sidebar">
+                  <div
+                    className="widget widget-booking"
+                    data-aos="fade-up"
+                    data-aos-duration={1500}
+                    data-aos-offset={50}
+                  >
+                    <h5 className="widget-title">Booking Ticket</h5>
+                    <BookingForm tickets={destination.tickets} />
+                  </div>
+                  <div
+                    className="widget widget-contact"
+                    data-aos="fade-up"
+                    data-aos-duration={1500}
+                    data-aos-offset={50}
+                  >
+                    <h5 className="widget-title">Need Help?</h5>
+                    <ul className="list-style-one">
+                      <li>
+                        <i className="far fa-user" />{" "}
+                        <a>{destination.manager.name}</a>
+                      </li>
+                      <li>
+                        <i className="far fa-envelope" />{" "}
+                        <a href={`mailto:${destination.manager.email}`}>
+                          {destination.manager.email}
+                        </a>
+                      </li>
+                      <li>
+                        <i className="far fa-phone-volume" />{" "}
+                        <a href={`callto:${destination.manager.phone}`}>
+                          {destination.manager.phone}
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
-        {/* About Us Area end */}
-        {/* Destinations Area start */}
-        <section className="destinations-area bgc-lighter pt-85 pb-100 rel z-1">
-          <div className="container">
-            <div className="row justify-content-center">
-              <div className="col-lg-12">
-                <div
-                  className="section-title text-center counter-text-wrap mb-50"
-                  data-aos="fade-up"
-                  data-aos-duration={1500}
-                  data-aos-offset={50}
-                >
-                  <SectionTitle title={"Explore Our Popular Destinations"} />
-                </div>
-              </div>
-            </div>
-            <Destination destData={destData} />
-          </div>
-        </section>
-        {/* Destinations Area end */}
-
-        {/* Newsletter Area end */}
+        {/* Tour Details Area end */}
       </ReveloLayout>
     );
   } catch (error) {

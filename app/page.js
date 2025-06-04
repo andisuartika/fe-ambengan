@@ -105,8 +105,7 @@ const page = async () => {
                 >
                   <div className="image">
                     <div className="ratting">
-                      <i className="fas fa-star" />{" "}
-                      {(Math.random() * 0.5 + 4.5).toFixed(1)}
+                      <i className="fas fa-star" /> {dest.rating}
                     </div>
                     <a href="#" className="heart">
                       <i className="fas fa-heart" />
