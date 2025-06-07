@@ -1,6 +1,6 @@
 import Banner from "@/components/Banner";
 import Subscribe from "@/components/Subscribe";
-import TourSidebar from "@/components/TourSidebar";
+import TourSidebar from "@/components/DestinationSidebar";
 import ReveloLayout from "@/layout/ReveloLayout";
 import Link from "next/link";
 const page = () => {

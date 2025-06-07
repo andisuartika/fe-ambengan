@@ -42,7 +42,7 @@ const Menu = () => {
               <Link href="about">About</Link>
             </li>
             <li>
-              <Link href="destination2">Destinations</Link>
+              <Link href="destination">Destinations</Link>
             </li>
             <li>
               <Link href="tour-list">Tour</Link>
