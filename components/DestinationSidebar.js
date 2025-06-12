@@ -1,4 +1,3 @@
-// components/Sidebar.js
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -166,7 +165,10 @@ export default function Sidebar({
                     Category: {selectedCategory}
                     <button
                       onClick={() =>
-                        handleCategoryClick("all", "All Destinations")
+                        handleCategoryClick(
+                          "All Destinations",
+                          "All Destinations"
+                        )
                       }
                       className="btn-close btn-close-white ms-2"
                       style={{ fontSize: "10px" }}

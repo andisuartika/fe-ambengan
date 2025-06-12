@@ -307,12 +307,15 @@ const page = async () => {
                       </Link>
                     </h5>
                     <ul className="list-style-one">
-                      {accom.facilities.map((facility, i) => (
+                      {accom.facilities.slice(0, 4).map((facility, i) => (
                         <li key={i}>
-                          <i
-                            className={facilityIcons[facility] || "fal fa-cogs"}
-                          />{" "}
-                          {facility}
+                          <img
+                            src={facility.icon}
+                            width="20"
+                            color="white"
+                            className="mx-2"
+                          />
+                          {facility.name}
                         </li>
                       ))}
                     </ul>
@@ -361,7 +364,7 @@ const page = async () => {
                 <span className="category">Homestay</span>
                 <h2>Local Charm: Discover Our Homestays </h2>
                 <Link
-                  href="tour-details"
+                  href="/accomodation"
                   className="theme-btn style-two bgc-secondary"
                 >
                   <span data-hover="Explore Homestays">Explore Homestays</span>
@@ -384,7 +387,7 @@ const page = async () => {
               >
                 <span className="category">Destinations</span>
                 <h2>Enchanting Waters of Ambengan: Rivers & Waterfalls</h2>
-                <Link href="tour-details" className="theme-btn style-two">
+                <Link href="/destination" className="theme-btn style-two">
                   <span data-hover="Explore Destination">
                     Explore Destination
                   </span>
@@ -408,7 +411,7 @@ const page = async () => {
                 <span className="category">Tours</span>
                 <h2>Discover More with Our Signature Ambengan Toursa</h2>
                 <Link
-                  href="tour-details"
+                  href="/tour"
                   className="theme-btn style-two bgc-secondary"
                 >
                   <span data-hover="Explore Tours">Explore Tours</span>

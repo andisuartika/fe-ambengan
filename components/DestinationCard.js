@@ -52,14 +52,15 @@ const DestinationCard = ({
         {showHeart && (
           <button
             onClick={handleHeartClick}
-            className={`heart absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center z-10 transition-colors duration-300 ${
-              isLiked
-                ? "bg-red-500 text-white"
-                : "bg-white/80 text-gray-600 hover:bg-red-500 hover:text-white"
+            className={`heart absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center z-10 transition-colors duration-300 
             }`}
             aria-label={isLiked ? "Remove from favorites" : "Add to favorites"}
           >
-            <i className={`fas fa-heart ${isLiked ? "text-white" : ""}`} />
+            {isLiked ? (
+              <i className="fa fa-heart" />
+            ) : (
+              <i className="far fa-heart" />
+            )}
           </button>
         )}
 

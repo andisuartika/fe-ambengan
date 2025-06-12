@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState, useMemo } from "react";
 import Select from "react-select";
 
@@ -97,19 +98,45 @@ const SearchFilter = ({ destinations, categories }) => {
             <i className="fas fa-users" />
           </div>
           <span className="title">Guests</span>
-          <div>
-            <button onClick={() => setGuests(Math.max(1, guests - 1))}>
-              −
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <button
+              type="button"
+              onClick={() => setGuests((prev) => Math.max(prev - 1, 1))}
+              style={{
+                padding: "4px 10px",
+                fontSize: "16px",
+                background: "#eee",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              –
             </button>
-            <span style={{ margin: "0 10px" }}>{guests}</span>
-            <button onClick={() => setGuests(guests + 1)}>+</button>
+            <span style={{ minWidth: "20px", textAlign: "center" }}>
+              {guests}
+            </span>
+            <button
+              type="button"
+              onClick={() => setGuests((prev) => Math.max(prev + 1, 1))}
+              style={{
+                padding: "4px 10px",
+                fontSize: "16px",
+                background: "#eee",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              +
+            </button>
           </div>
         </div>
         <div className="search-button">
-          <button className="theme-btn">
+          <Link href={`/destination`} className="theme-btn">
             <span data-hover="Search">Search</span>
             <i className="far fa-search" />
-          </button>
+          </Link>
         </div>
       </div>
     </div>

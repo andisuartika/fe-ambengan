@@ -20,17 +20,13 @@ const page = () => {
     setSelectedCategory(category.name);
   };
 
-  // Handle category update from DestinationList
-  const handleCategoryUpdate = (categoryList) => {
-    setCategories(categoryList);
-  };
-
   return (
     <ReveloLayout>
       <Banner
         pageTitle={"Ambengan Village"}
         pageName={"Destination List"}
         search
+        image={"assets/images/banner/destination.png"}
       />
       {/* Destination List Area start */}
       <section className="tour-list-page py-100 rel z-1">

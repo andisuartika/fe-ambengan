@@ -1,0 +1,47 @@
+.slider-wrapper {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Container setiap slide */
+.slider-image-container {
+  height: 400px;
+  width: 1000px;
+}
+
+/* Gambar FULL ke container */
+.slider-image {
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Panah */
+.arrow-btn {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.5); /* putih 80% */
+  color: #63ab45;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.arrow-btn.left {
+  left: 10px;
+}
+.arrow-btn.right {
+  right: 10px;
+}
+.slider-wrapper:hover .arrow-btn {
+  display: flex;
+}

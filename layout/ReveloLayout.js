@@ -6,6 +6,9 @@ import { useEffect } from "react";
 import niceSelect from "react-nice-select";
 import Footer from "./Footer";
 import Header from "./Header";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 const ReveloLayout = ({ children, header, footer, insta, sideBar }) => {
   useEffect(() => {
     roveloUtility.animation();
@@ -21,9 +24,9 @@ const ReveloLayout = ({ children, header, footer, insta, sideBar }) => {
   return (
     <div className={`page-wrapper ${sideBar ? "for-sidebar-menu" : ""}`}>
       <EmbedPopup />
-      <ImageView />
       <Header header={header} />
       {children}
+      <ImageView />
       <Footer footer={footer} insta={insta} />
     </div>
   );

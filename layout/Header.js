@@ -39,19 +39,19 @@ const Menu = () => {
               <Link href="/">Home</Link>
             </li>
             <li>
-              <Link href="about">About</Link>
+              <Link href="/about">About</Link>
             </li>
             <li>
-              <Link href="destination">Destinations</Link>
+              <Link href="/destination">Destinations</Link>
             </li>
             <li>
-              <Link href="tour-list">Tour</Link>
+              <Link href="/tour-list">Tour</Link>
             </li>
             <li>
-              <Link href="destination1">Accomodation</Link>
+              <Link href="/accomodation">Accomodation</Link>
             </li>
             <li>
-              <Link href="gellery-grid">Gallery</Link>
+              <Link href="/gellery-grid">Gallery</Link>
             </li>
           </ul>
         </Accordion.Collapse>

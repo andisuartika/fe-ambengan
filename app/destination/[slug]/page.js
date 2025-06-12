@@ -1,6 +1,3 @@
-import SectionTitle from "@/components/SectionTitle";
-import Destination from "@/components/slider/Destination";
-import Subscribe from "@/components/Subscribe";
 import ReveloLayout from "@/layout/ReveloLayout";
 import BookingForm from "@/components/BookingForm";
 
@@ -263,24 +260,19 @@ export default async function DestinationDetailPage({ params }) {
                   <p>
                     {destination.description.replace(/<\/?[^>]+(>|$)/g, "")}{" "}
                   </p>
-                  <div className="row pb-55">
-                    <div className="col-md-6">
-                      <div className="tour-include-exclude mt-30">
-                        <h5>Facilities</h5>
-                        <ul className="list-style-one check mt-25">
-                          <li>
-                            <i className="far fa-check" /> Pick and Drop
-                            Services
-                          </li>
-                          {destination.facilities.map((item, index) => (
-                            <li>
-                              <i key={index} className="far fa-check" />
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
+                  <h3>Facilities</h3>
+                  <div className="tour-activities mt-30 mb-45">
+                    {destination.facilities.map((facility) => (
+                      <div className="tour-activity-item">
+                        <img
+                          src={facility.icon}
+                          alt={facility.name}
+                          width={32}
+                          height={32}
+                        />
+                        <span className="mx-2">{facility.name}</span>
                       </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
                 <h3>Maps</h3>
@@ -304,7 +296,7 @@ export default async function DestinationDetailPage({ params }) {
                     >
                       <div className="author-thumb">
                         <img
-                          src="https://xsgames.co/randomusers/avatar.php?g=male"
+                          src={`https://xsgames.co/randomusers/avatar.php?g=male&seed=${index}`}
                           alt="Author"
                         />
                       </div>
