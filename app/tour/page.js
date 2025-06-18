@@ -1,75 +1,50 @@
 "use client";
 import Banner from "@/components/Banner";
 import { formatRupiah } from "@/utility/formatters";
+import { useEffect, useState } from "react";
+import TourCard from "@/components/TourCard";
 import ReveloLayout from "@/layout/ReveloLayout";
 import Link from "next/link";
-import HomestayCard from "@/components/HomestayCard";
-import { useEffect, useState } from "react";
 const page = () => {
-  const [homestays, setHomestays] = useState([]);
+  const [tours, setTours] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
-  // fetch homestay
-  const fetchHomestays = async () => {
+  // fetch tours
+  const fetchTours = async () => {
     try {
       setLoading(true);
       setError(null);
 
       const baseUrl = process.env.NEXT_PUBLIC_API_URL;
       const village = process.env.NEXT_PUBLIC_VILLAGE_CODE;
-      const destUrl = `${baseUrl}/homestays?village=${village}`;
+      const destUrl = `${baseUrl}/tours?village=${village}`;
 
       const response = await fetch(destUrl);
       if (!response.ok) throw new Error("Failed to fetch destination");
 
       const apiData = await response.json();
-      const homestaysArray = apiData.data || [];
+      const toursArray = apiData.data || [];
 
-      const transformedData = homestaysArray.map((item, index) => ({
+      const transformedData = toursArray.map((item, index) => ({
         id: item.id || index,
         title: item.name,
         manager: item.manager.name,
         slug: item.slug || item.name.toLowerCase().replace(/\s+/g, "-"),
-        location: item.address,
         description: item.description,
         category: item.category,
-        price: item.roomTypes?.length
-          ? formatRupiah(
-              Math.min(
-                ...item.roomTypes.map((rt) => {
-                  const active = rt.active_prices;
-                  if (active?.length) {
-                    return Math.min(...active.map((ap) => ap.price));
-                  }
-                  return parseFloat(rt.price) || Infinity;
-                })
-              )
-            )
-          : "Free",
-
-        priceValue: item.roomTypes?.length
-          ? Math.min(
-              ...item.roomTypes.map((rt) => {
-                const active = rt.active_prices;
-                if (active?.length) {
-                  return Math.min(...active.map((ap) => ap.price));
-                }
-                return parseFloat(rt.price) || Infinity;
-              })
-            )
-          : 0,
+        price: formatRupiah(item.price),
         rating: Math.min(Math.max(parseInt(item.rating || 5), 1), 5),
         image: item.thumbnail,
       }));
 
-      setHomestays(transformedData);
+      setTours(transformedData);
 
-      console.log("Fetched homestays:", homestays);
+      console.log("Fetched tours:", tours);
     } catch (err) {
-      setError("Failed to load homestays. Please try again.");
+      setError("Failed to load tours. Please try again.");
       console.error("Fetch error:", err);
     } finally {
       setLoading(false);
@@ -77,22 +52,21 @@ const page = () => {
   };
 
   useEffect(() => {
-    fetchHomestays();
+    fetchTours();
   }, []);
 
-  const totalPages = Math.ceil(homestays.length / itemsPerPage);
+  const totalPages = Math.ceil(tours.length / itemsPerPage);
 
-  const paginatedHomestays = homestays.slice(
+  const paginatedTours = tours.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
   return (
     <ReveloLayout>
       <Banner
-        pageTitle={"Ambengan Homestay"}
-        pageName={"Homestay List"}
-        search={true}
-        image={"assets/images/banner/homestay.png"}
+        pageTitle={"Ambengan Tour"}
+        pageName={"Tour List"}
+        image={"assets/images/banner/tour.png"}
       />
       {/* Accomodation Grid Area start */}
       <section className="tour-grid-page py-100 rel z-2">
@@ -102,7 +76,7 @@ const page = () => {
           {error && (
             <div className="text-red-500 mb-4">
               {error}{" "}
-              <button onClick={fetchHomestays} className="underline">
+              <button onClick={fetchTours} className="underline">
                 Retry
               </button>
             </div>
@@ -110,15 +84,15 @@ const page = () => {
           {/* Results */}
           {!loading && !error && (
             <>
-              {homestays.length === 0 ? (
-                <p>No homestays found.</p>
+              {tours.length === 0 ? (
+                <p>No tours found.</p>
               ) : (
                 <>
                   <div className="row">
-                    {paginatedHomestays.map((homestay, index) => (
-                      <HomestayCard
-                        key={homestay.id}
-                        {...homestay}
+                    {paginatedTours.map((tour, index) => (
+                      <TourCard
+                        key={tour.id}
+                        {...tour}
                         aosDelay={index * 100}
                       />
                     ))}
@@ -201,6 +175,7 @@ const page = () => {
           )}
         </div>
       </section>
+      {/* Tour Grid Area end */}
     </ReveloLayout>
   );
 };

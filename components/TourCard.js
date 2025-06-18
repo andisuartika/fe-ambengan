@@ -4,11 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-const HomestayCard = ({
+const TourCard = ({
   title = "",
   manager = "",
   slug = "",
-  location = "",
   description = "",
   price = 0,
   rating = 5,
@@ -56,10 +55,10 @@ const HomestayCard = ({
           <img src={image} alt="Tour List" />
         </div>
         <div className="content">
+          <h5>
+            <Link href={`/tour/${slug}`}>{title}</Link>
+          </h5>
           <div className="destination-header">
-            <span className="location">
-              <i className="fal fa-map-marker-alt" /> {location}
-            </span>
             <div className="ratting">
               {Array.from({ length: 5 }).map((_, i) => {
                 const index = i + 1;
@@ -73,26 +72,17 @@ const HomestayCard = ({
               })}
             </div>
           </div>
-          <h5>
-            <Link href={`/accomodation/${slug}`}>{title}</Link>
-          </h5>
+
           <p className="line-clamp-description">
             {description.replace(/<\/?[^>]+(>|$)/g, "")}
           </p>
-          <ul className="blog-meta">
-            <li>
-              <i className="far fa-clock" /> 2 days 1 nights
-            </li>
-            <li>
-              <i className="far fa-user" /> 2-5 guest
-            </li>
-          </ul>
+
           <div className="destination-footer">
             <span className="price">
               <span>{price}</span>/person
             </span>
             <Link
-              href={`/accomodation/${slug}`}
+              href={`/tour/${slug}`}
               className="theme-btn style-two style-three"
             >
               <span data-hover="Book Now">Book Now</span>
@@ -105,4 +95,4 @@ const HomestayCard = ({
   );
 };
 
-export default HomestayCard;
+export default TourCard;

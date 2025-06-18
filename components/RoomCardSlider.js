@@ -19,6 +19,30 @@ export default function RoomCard({ room }) {
     slidesToScroll: 1,
   };
 
+  const handleBooking = () => {
+    const quantity = 1;
+    const checkIn = "2025-06-15";
+    const checkOut = "2025-06-16";
+
+    if (!room?.code) {
+      console.warn("Room code tidak tersedia.");
+      return;
+    }
+
+    const query = new URLSearchParams({
+      type: "homestay",
+      code: room.code,
+      quantity: quantity.toString(),
+      checkIn: checkIn,
+      checkOut: checkOut,
+    });
+
+    const url = `http://best.test:8000/booking/homestay?${query.toString()}`;
+
+    // 👇 Buka di tab baru dengan keamanan tambahan
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <div
       className="destination-item style-three bgc-lighter"
@@ -57,10 +81,13 @@ export default function RoomCard({ room }) {
           <span className="price">
             <span>{formatRupiah(room.price)}</span>/Night
           </span>
-          <Link href="tour-details" className="theme-btn style-two style-three">
+          <button
+            onClick={handleBooking}
+            className="theme-btn style-two style-three"
+          >
             <span data-hover="Book Now">Book Now</span>
             <i className="fal fa-arrow-right" />
-          </Link>
+          </button>
         </div>
       </div>
     </div>

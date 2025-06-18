@@ -4,25 +4,25 @@ import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { formatRupiah } from "@/utility/formatters";
 
-export default function BookingForm({ tickets, destination }) {
+export default function TourForm({ rates, tour }) {
   const router = useRouter();
   const today = new Date().toISOString().split("T")[0]; // format: YYYY-MM-DD
   const [date, setDate] = useState(today);
   const [quantities, setQuantities] = useState({});
 
-  const handleQuantityChange = (ticketCode, change) => {
+  const handleQuantityChange = (id, change) => {
     setQuantities((prev) => ({
       ...prev,
-      [ticketCode]: Math.max((prev[ticketCode] || 0) + change, 0),
+      [id]: Math.max((prev[id] || 0) + change, 0),
     }));
   };
 
   const totalPrice = useMemo(() => {
-    return tickets.reduce((total, ticket) => {
-      const qty = quantities[ticket.code] || 0;
-      return total + ticket.price * qty;
+    return rates.reduce((total, rate) => {
+      const qty = quantities[rate.id] || 0;
+      return total + rate.price * qty;
     }, 0);
-  }, [quantities, tickets]);
+  }, [quantities, rates]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,8 +37,8 @@ export default function BookingForm({ tickets, destination }) {
     }
 
     const query = new URLSearchParams();
-    query.set("type", "destination");
-    query.set("slug", destination);
+    query.set("type", "tour");
+    query.set("slug", tour);
     query.set("date", date);
 
     // Tambahkan semua tiket ke query
@@ -47,7 +47,7 @@ export default function BookingForm({ tickets, destination }) {
       query.append("quantity[]", quantity.toString());
     });
 
-    const url = `http://best.test:8000/booking/destination?${query.toString()}`;
+    const url = `http://best.test:8000/booking/tour?${query.toString()}`;
 
     // 👉 buka di tab baru
     window.open(url, "_blank");
@@ -69,7 +69,7 @@ export default function BookingForm({ tickets, destination }) {
 
       <h6>Available Ticket(s) for You:</h6>
       <ul>
-        {tickets.map((ticket, index) => (
+        {rates.map((rate, index) => (
           <div
             key={index}
             style={{
@@ -82,19 +82,19 @@ export default function BookingForm({ tickets, destination }) {
             }}
           >
             <div>
-              <div style={{ fontWeight: "bold" }}>{ticket.name}</div>
+              <div style={{ fontWeight: "bold" }}>{rate.name} /PAX</div>
               <div
                 className="price"
                 style={{ fontSize: "14px", color: "#888" }}
               >
-                {formatRupiah(ticket.price)}
+                {formatRupiah(rate.price)}
               </div>
             </div>
 
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <button
                 type="button"
-                onClick={() => handleQuantityChange(ticket.code, -1)}
+                onClick={() => handleQuantityChange(rate.id, -1)}
                 style={{
                   padding: "4px 10px",
                   fontSize: "16px",
@@ -107,11 +107,11 @@ export default function BookingForm({ tickets, destination }) {
                 –
               </button>
               <span style={{ minWidth: "20px", textAlign: "center" }}>
-                {quantities[ticket.code] || 0}
+                {quantities[rate.id] || 0}
               </span>
               <button
                 type="button"
-                onClick={() => handleQuantityChange(ticket.code, 1)}
+                onClick={() => handleQuantityChange(rate.id, 1)}
                 style={{
                   padding: "4px 10px",
                   fontSize: "16px",

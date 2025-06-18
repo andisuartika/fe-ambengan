@@ -212,7 +212,7 @@ export default async function DestinationDetailPage({ params }) {
                     {destination.address}
                   </span>
                   <div className="section-title pb-5">
-                    <h2>{destination.nam}</h2>
+                    <h2>{destination.name}</h2>
                   </div>
                   <div className="ratting">
                     {Array.from({ length: 5 }).map((_, i) => {
@@ -257,9 +257,13 @@ export default async function DestinationDetailPage({ params }) {
               <div className="col-lg-8">
                 <div className="tour-details-content">
                   <h3>Explore Destination</h3>
-                  <p>
-                    {destination.description.replace(/<\/?[^>]+(>|$)/g, "")}{" "}
-                  </p>
+                  <div
+                    className="tour-description prose max-w-none"
+                    dangerouslySetInnerHTML={{
+                      __html: destination.description,
+                    }}
+                  />
+
                   <h3>Facilities</h3>
                   <div className="tour-activities mt-30 mb-45">
                     {destination.facilities.map((facility) => (
@@ -341,7 +345,10 @@ export default async function DestinationDetailPage({ params }) {
                     data-aos-offset={50}
                   >
                     <h5 className="widget-title">Booking Ticket</h5>
-                    <BookingForm tickets={destination.tickets} />
+                    <BookingForm
+                      tickets={destination.tickets}
+                      destination={destination.slug}
+                    />
                   </div>
                   <div
                     className="widget widget-contact"
