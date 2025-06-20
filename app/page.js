@@ -123,14 +123,18 @@ const page = async () => {
                   <div className="content">
                     <span className="location">
                       <i className="fas fa-map-marker-alt" />{" "}
-                      {dest.address || "Unknown"}
+                      {dest.address
+                        .replace(/<\/?[^>]+(>|$)/g, "") // hapus tag HTML
+                        .split(" ")
+                        .slice(0, 4)
+                        .join(" ") + "..." || "Unknown"}
                     </span>
                     <h5>
                       <Link href={`/destination/${dest.slug}`}>
                         {dest.name}
                       </Link>
                     </h5>
-                    <span className="desc">
+                    <span className="desc line-clamp-3">
                       {dest.description
                         .replace(/<\/?[^>]+(>|$)/g, "") // hapus tag HTML
                         .split(" ")
@@ -147,7 +151,7 @@ const page = async () => {
                       </span>
                       /per person
                     </span>
-                    <a href="#" className="read-more">
+                    <a href={`/destination/${dest.slug}`} className="read-more">
                       Book Now <i className="fal fa-angle-right" />
                     </a>
                   </div>
@@ -209,7 +213,7 @@ const page = async () => {
                     </div>
                   </div>
                 </div>
-                <Link href="destination1" className="theme-btn mt-10 style-two">
+                <Link href="destination" className="theme-btn mt-10 style-two">
                   <span data-hover="Explore Destinations">
                     Explore Destinations
                   </span>
@@ -282,7 +286,7 @@ const page = async () => {
                 >
                   <div className="image">
                     <div className="ratting">
-                      <i className="fas fa-star" /> 4.8
+                      <i className="fas fa-star" /> {accom.rating}
                     </div>
                     <a href="#" className="heart">
                       <i className="fas fa-heart" />
@@ -302,7 +306,7 @@ const page = async () => {
                       <i className="fal fa-map-marker-alt" /> {accom.address}
                     </span>
                     <h5>
-                      <Link href={`/destination-details/${accom.code}`}>
+                      <Link href={`/accomodation/${accom.slug}`}>
                         {accom.name}
                       </Link>
                     </h5>
@@ -335,7 +339,7 @@ const page = async () => {
             ))}
           </div>
           <div className="hotel-more-btn text-center mt-40">
-            <Link href="destination2" className="theme-btn style-four">
+            <Link href="accomodation" className="theme-btn style-four">
               <span data-hover="Explore More Homestays">
                 Explore More Homestays
               </span>

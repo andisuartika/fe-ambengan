@@ -104,46 +104,15 @@ const Header1 = ({ sidebarClick }) => {
                 <Menu />
                 {/* Main Menu End*/}
               </div>
-              {/* Nav Search */}
-              <div className="nav-search">
-                <button
-                  className="far fa-search"
-                  onClick={() => setToggleSearch(!toggleSearch)}
-                />
-                <form
-                  action="#"
-                  className={toggleSearch ? "" : "hide"}
-                  ref={domNode}
-                >
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    className="searchbox"
-                    required
-                  />
-                  <button
-                    type="submit"
-                    className="searchbutton far fa-search"
-                  />
-                </form>
-              </div>
               {/* Menu Button */}
               <div className="menu-btns py-10">
                 <Link
-                  href="contact"
+                  href="destination"
                   className="theme-btn style-two bgc-secondary"
                 >
                   <span data-hover="Book Now">Book Now</span>
                   <i className="fal fa-arrow-right" />
                 </Link>
-                {/* menu sidbar */}
-                <div className="menu-sidebar" onClick={() => sidebarClick()}>
-                  <button className="bg-transparent">
-                    <span className="icon-bar" />
-                    <span className="icon-bar" />
-                    <span className="icon-bar" />
-                  </button>
-                </div>
               </div>
             </div>
           </div>
@@ -425,20 +394,13 @@ const Header3 = ({ sidebarClick }) => {
               {/* Menu Button */}
               <div className="menu-btns py-10">
                 <Link
-                  href="contact"
+                  href="destination"
                   className="theme-btn style-two bgc-secondary"
                 >
                   <span data-hover="Book Now">Book Now</span>
                   <i className="fal fa-arrow-right" />
                 </Link>
                 {/* menu sidbar */}
-                <div className="menu-sidebar" onClick={() => sidebarClick()}>
-                  <button className="bg-transparent">
-                    <span className="icon-bar" />
-                    <span className="icon-bar" />
-                    <span className="icon-bar" />
-                  </button>
-                </div>
               </div>
             </div>
           </div>

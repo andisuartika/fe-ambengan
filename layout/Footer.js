@@ -149,20 +149,6 @@ const Footer1 = () => {
                   became known as Ambengan. Ambengan Village is located around
                   400-1000 meters above sea level and is flanked by 3 hills.
                 </p>
-                <div className="social-style-one mt-15">
-                  <Link href="contact">
-                    <i className="fab fa-facebook-f" />
-                  </Link>
-                  <Link href="contact">
-                    <i className="fab fa-youtube" />
-                  </Link>
-                  <Link href="contact">
-                    <i className="fab fa-pinterest" />
-                  </Link>
-                  <Link href="contact">
-                    <i className="fab fa-twitter" />
-                  </Link>
-                </div>
               </div>
             </div>
             <div
@@ -205,22 +191,7 @@ const Footer1 = () => {
                 </p>
               </div>
             </div>
-            <div className="col-lg-7 text-center text-lg-end">
-              <ul className="footer-bottom-nav">
-                <li>
-                  <Link href="about">Terms</Link>
-                </li>
-                <li>
-                  <Link href="about">Privacy Policy</Link>
-                </li>
-                <li>
-                  <Link href="about">Legal notice</Link>
-                </li>
-                <li>
-                  <Link href="about">Accessibility</Link>
-                </li>
-              </ul>
-            </div>
+            <div className="col-lg-7 text-center text-lg-end"></div>
           </div>
           {/* Scroll Top Button */}
           <button className="scroll-top scroll-to-target" data-target="#">
@@ -274,22 +245,7 @@ const Footer2 = ({ insta }) => {
                 </p>
               </div>
             </div>
-            <div className="col-lg-7 text-center text-lg-end">
-              <ul className="footer-bottom-nav">
-                <li>
-                  <Link href="about">Terms</Link>
-                </li>
-                <li>
-                  <Link href="about">Privacy Policy</Link>
-                </li>
-                <li>
-                  <Link href="about">Legal notice</Link>
-                </li>
-                <li>
-                  <Link href="about">Accessibility</Link>
-                </li>
-              </ul>
-            </div>
+            <div className="col-lg-7 text-center text-lg-end"></div>
           </div>
         </div>
       </div>
