@@ -26,10 +26,7 @@ const Client = () => {
         data-aos-offset={50}
       >
         <a href="#">
-          <img
-            src="assets/images/client-logos/client-logo2.png"
-            alt="Client Logo"
-          />
+          <img src="assets/images/supported/ambengan.png" alt="Client Logo" />
         </a>
       </div>
       <div
@@ -40,10 +37,7 @@ const Client = () => {
         data-aos-offset={50}
       >
         <a href="#">
-          <img
-            src="assets/images/client-logos/client-logo3.png"
-            alt="Client Logo"
-          />
+          <img src="assets/images/supported/pokdarwis.png" alt="Client Logo" />
         </a>
       </div>
       <div
@@ -54,10 +48,7 @@ const Client = () => {
         data-aos-offset={50}
       >
         <a href="#">
-          <img
-            src="assets/images/client-logos/client-logo4.png"
-            alt="Client Logo"
-          />
+          <img src="assets/images/supported/sukasada.png" alt="Client Logo" />
         </a>
       </div>
       <div
@@ -68,10 +59,18 @@ const Client = () => {
         data-aos-offset={50}
       >
         <a href="#">
-          <img
-            src="assets/images/client-logos/client-logo5.png"
-            alt="Client Logo"
-          />
+          <img src="assets/images/supported/dispar.png" alt="Client Logo" />
+        </a>
+      </div>
+      <div
+        className="client-logo-item"
+        data-aos="flip-up"
+        data-aos-delay={200}
+        data-aos-duration={1500}
+        data-aos-offset={50}
+      >
+        <a href="#">
+          <img src="assets/images/supported/bestdesta.png" alt="Client Logo" />
         </a>
       </div>
     </Slider>
