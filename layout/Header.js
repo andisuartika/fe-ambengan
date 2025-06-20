@@ -51,7 +51,7 @@ const Menu = () => {
               <Link href="/accomodation">Accomodation</Link>
             </li>
             <li>
-              <Link href="/gellery-grid">Gallery</Link>
+              <Link href="/gallery">Gallery</Link>
             </li>
           </ul>
         </Accordion.Collapse>
