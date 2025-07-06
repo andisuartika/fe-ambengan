@@ -47,7 +47,9 @@ export default function TourForm({ rates, tour }) {
       query.append("quantity[]", quantity.toString());
     });
 
-    const url = `http://best.test:8000/booking/tour?${query.toString()}`;
+    const url = `${
+      process.env.NEXT_PUBLIC_URL
+    }/booking/tour?${query.toString()}`;
 
     // 👉 buka di tab baru
     window.open(url, "_blank");

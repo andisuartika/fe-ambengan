@@ -47,7 +47,9 @@ export default function BookingForm({ tickets, destination }) {
       query.append("quantity[]", quantity.toString());
     });
 
-    const url = `http://best.test:8000/booking/destination?${query.toString()}`;
+    const url = `${
+      process.env.NEXT_PUBLIC_URL
+    }/booking/destination?${query.toString()}`;
 
     // 👉 buka di tab baru
     window.open(url, "_blank");

@@ -37,7 +37,9 @@ export default function RoomCard({ room }) {
       checkOut: checkOut,
     });
 
-    const url = `http://best.test:8000/booking/homestay?${query.toString()}`;
+    const url = `${
+      process.env.NEXT_PUBLIC_URL
+    }/booking/homestay?${query.toString()}`;
 
     // 👇 Buka di tab baru dengan keamanan tambahan
     window.open(url, "_blank", "noopener,noreferrer");
