@@ -5,6 +5,7 @@ import { formatRupiah } from "@/utility/formatters";
 import ReveloLayout from "@/layout/ReveloLayout";
 import HomestayCard from "@/components/HomestayCard";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 import { useEffect, useState } from "react";
 
@@ -213,113 +214,115 @@ const page = () => {
         image={"assets/images/banner/homestay.png"}
       />
       {/* Accomodation Grid Area start */}
-      <section className="tour-grid-page py-100 rel z-2">
-        <div className="container">
-          {/* Loading / Error */}
-          {loading && <p>Loading...</p>}
-          {error && (
-            <div className="text-red-500 mb-4">
-              {error}{" "}
-              <button onClick={fetchHomestays} className="underline">
-                Retry
-              </button>
-            </div>
-          )}
-          {/* Results */}
-          {!loading && !error && (
-            <>
-              {homestays.length === 0 ? (
-                <p>No homestays found.</p>
-              ) : (
-                <>
-                  <div className="row">
-                    {paginatedHomestays.map((homestay, index) => (
-                      <HomestayCard
-                        key={homestay.id}
-                        {...homestay}
-                        queryString={queryString}
-                        aosDelay={index * 100}
-                      />
-                    ))}
-                  </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <section className="tour-grid-page py-100 rel z-2">
+          <div className="container">
+            {/* Loading / Error */}
+            {loading && <p>Loading...</p>}
+            {error && (
+              <div className="text-red-500 mb-4">
+                {error}{" "}
+                <button onClick={fetchHomestays} className="underline">
+                  Retry
+                </button>
+              </div>
+            )}
+            {/* Results */}
+            {!loading && !error && (
+              <>
+                {homestays.length === 0 ? (
+                  <p>No homestays found.</p>
+                ) : (
+                  <>
+                    <div className="row">
+                      {paginatedHomestays.map((homestay, index) => (
+                        <HomestayCard
+                          key={homestay.id}
+                          {...homestay}
+                          queryString={queryString}
+                          aosDelay={index * 100}
+                        />
+                      ))}
+                    </div>
 
-                  {totalPages > 1 && (
-                    <ul
-                      className="pagination pt-15 flex-wrap justify-center"
-                      data-aos="fade-up"
-                      data-aos-duration={1500}
-                      data-aos-offset={50}
-                    >
-                      {/* Previous */}
-                      <li
-                        className={`page-item ${
-                          currentPage === 1 ? "disabled" : ""
-                        }`}
+                    {totalPages > 1 && (
+                      <ul
+                        className="pagination pt-15 flex-wrap justify-center"
+                        data-aos="fade-up"
+                        data-aos-duration={1500}
+                        data-aos-offset={50}
                       >
-                        <button
-                          onClick={() =>
-                            setCurrentPage((prev) => Math.max(prev - 1, 1))
-                          }
-                          className="page-link"
-                          disabled={currentPage === 1}
-                        >
-                          <i className="far fa-chevron-left" />
-                        </button>
-                      </li>
-
-                      {/* Numbered Pages */}
-                      {Array.from({ length: totalPages }, (_, i) => (
+                        {/* Previous */}
                         <li
-                          key={i}
                           className={`page-item ${
-                            currentPage === i + 1 ? "active" : ""
+                            currentPage === 1 ? "disabled" : ""
                           }`}
                         >
                           <button
-                            onClick={() => setCurrentPage(i + 1)}
+                            onClick={() =>
+                              setCurrentPage((prev) => Math.max(prev - 1, 1))
+                            }
                             className="page-link"
+                            disabled={currentPage === 1}
                           >
-                            {i + 1}
-                            {currentPage === i + 1 && (
-                              <span className="sr-only">(current)</span>
-                            )}
+                            <i className="far fa-chevron-left" />
                           </button>
                         </li>
-                      ))}
 
-                      {/* Optional Ellipsis if many pages */}
-                      {totalPages > 5 && currentPage < totalPages - 2 && (
-                        <li className="page-item disabled">
-                          <span className="page-link">...</span>
-                        </li>
-                      )}
+                        {/* Numbered Pages */}
+                        {Array.from({ length: totalPages }, (_, i) => (
+                          <li
+                            key={i}
+                            className={`page-item ${
+                              currentPage === i + 1 ? "active" : ""
+                            }`}
+                          >
+                            <button
+                              onClick={() => setCurrentPage(i + 1)}
+                              className="page-link"
+                            >
+                              {i + 1}
+                              {currentPage === i + 1 && (
+                                <span className="sr-only">(current)</span>
+                              )}
+                            </button>
+                          </li>
+                        ))}
 
-                      {/* Next */}
-                      <li
-                        className={`page-item ${
-                          currentPage === totalPages ? "disabled" : ""
-                        }`}
-                      >
-                        <button
-                          onClick={() =>
-                            setCurrentPage((prev) =>
-                              Math.min(prev + 1, totalPages)
-                            )
-                          }
-                          className="page-link"
-                          disabled={currentPage === totalPages}
+                        {/* Optional Ellipsis if many pages */}
+                        {totalPages > 5 && currentPage < totalPages - 2 && (
+                          <li className="page-item disabled">
+                            <span className="page-link">...</span>
+                          </li>
+                        )}
+
+                        {/* Next */}
+                        <li
+                          className={`page-item ${
+                            currentPage === totalPages ? "disabled" : ""
+                          }`}
                         >
-                          <i className="far fa-chevron-right" />
-                        </button>
-                      </li>
-                    </ul>
-                  )}
-                </>
-              )}
-            </>
-          )}
-        </div>
-      </section>
+                          <button
+                            onClick={() =>
+                              setCurrentPage((prev) =>
+                                Math.min(prev + 1, totalPages)
+                              )
+                            }
+                            className="page-link"
+                            disabled={currentPage === totalPages}
+                          >
+                            <i className="far fa-chevron-right" />
+                          </button>
+                        </li>
+                      </ul>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+          </div>
+        </section>
+      </Suspense>
     </ReveloLayout>
   );
 };
