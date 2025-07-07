@@ -1,4 +1,5 @@
 "use client";
+
 import ReveloLayout from "@/layout/ReveloLayout";
 import Link from "next/link";
 import RoomCardSlider from "@/components/RoomCardSlider";
