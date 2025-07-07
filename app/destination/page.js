@@ -25,7 +25,6 @@ const page = () => {
       <Banner
         pageTitle={"Ambengan Village"}
         pageName={"Destination List"}
-        search
         image={"assets/images/banner/destination.png"}
       />
       {/* Destination List Area start */}

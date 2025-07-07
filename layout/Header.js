@@ -48,7 +48,7 @@ const Menu = () => {
               <Link href="/tour">Tour</Link>
             </li>
             <li>
-              <Link href="/accomodation">Accomodation</Link>
+              <Link href="/accommodation">Accommodation</Link>
             </li>
             <li>
               <Link href="/gallery">Gallery</Link>

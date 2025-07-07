@@ -3,8 +3,9 @@ import Slider from "react-slick";
 import Link from "next/link";
 import { formatRupiah } from "@/utility/formatters";
 import ImageSlider from "./slider/ImageSlider";
+import { useSearchParams } from "next/navigation";
 
-export default function RoomCard({ room }) {
+export default function RoomCard({ room, queryString }) {
   const allImages = [
     room.thumbnail,
     ...(room.galleries || []).map((g) => g.url),
@@ -19,11 +20,15 @@ export default function RoomCard({ room }) {
     slidesToScroll: 1,
   };
 
-  const handleBooking = () => {
-    const quantity = 1;
-    const checkIn = "2025-06-15";
-    const checkOut = "2025-06-16";
+  const searchParams = useSearchParams();
 
+  const checkin = searchParams.get("checkin");
+  const checkout = searchParams.get("checkout");
+  const guest = searchParams.get("guest");
+  const quantity = searchParams.get("room");
+
+  //handle booking
+  const handleBooking = () => {
     if (!room?.code) {
       console.warn("Room code tidak tersedia.");
       return;
@@ -33,10 +38,12 @@ export default function RoomCard({ room }) {
       type: "homestay",
       code: room.code,
       quantity: quantity.toString(),
-      checkIn: checkIn,
-      checkOut: checkOut,
+      checkIn: checkin,
+      checkOut: checkout,
+      guest: guest,
     });
 
+    //go to url booking best desta
     const url = `${
       process.env.NEXT_PUBLIC_URL
     }/booking/homestay?${query.toString()}`;

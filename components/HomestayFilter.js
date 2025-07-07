@@ -2,69 +2,223 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
-export default function filterHomestay({ search, onSearchChange }) {
-  const [localSearch, setLocalSearch] = useState(search || "");
+const SearchFilter = () => {
+  const [checkInDate, setCheckInDate] = useState("");
+  const [checkOutDate, setCheckOutDate] = useState("");
+  const [GuestCount, setGuestCount] = useState(1);
+  const [roomCount, setRoomCount] = useState(1);
 
-  // Sync local search with parent
+  /// Ambil tanggal besok (untuk default dan min check-in)
+  const getTomorrow = () => {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().split("T")[0];
+  };
+
+  // Atur default saat pertama kali load
   useEffect(() => {
-    setLocalSearch(search || "");
-  }, [search]);
+    const checkin = getTomorrow();
+    const checkout = getNextDay(checkin);
+    setCheckInDate(checkin);
+    setCheckOutDate(checkout);
+  }, []);
 
-  const handleSearchInput = (e) => {
-    const value = e.target.value;
-    setLocalSearch(value);
-    // Real-time search (optional - remove if you want submit-only)
-    onSearchChange(value);
+  // Ambil tanggal setelah 1 hari dari tanggal tertentu
+  const getNextDay = (dateStr) => {
+    const date = new Date(dateStr);
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().split("T")[0];
+  };
+
+  const handleCheckInChange = (e) => {
+    const selectedCheckin = e.target.value;
+    setCheckInDate(selectedCheckin);
+    setCheckOutDate(getNextDay(selectedCheckin)); // set checkout ke H+1
+  };
+
+  useEffect(() => {
+    const today = new Date();
+    const checkIn = new Date(today);
+    checkIn.setDate(today.getDate() + 1);
+
+    const checkOut = new Date(today);
+    checkOut.setDate(today.getDate() + 2);
+
+    const formatDate = (date) => {
+      return date.toISOString().split("T")[0]; // format YYYY-MM-DD
+    };
+
+    setCheckInDate(formatDate(checkIn));
+    setCheckOutDate(formatDate(checkOut));
+  }, []);
+
+  const increment = (setter) => setter((prev) => prev + 1);
+  const decrement = (setter) => setter((prev) => (prev > 1 ? prev - 1 : 1));
+
+  const searchParams = {
+    pathname: "/accommodation",
+    query: {
+      checkin: checkInDate,
+      checkout: checkOutDate,
+      guest: GuestCount,
+      room: roomCount,
+    },
   };
 
   return (
-    <div className="shop-shorter rel z-3 mb-20">
+    <div className="container container-1400">
       <div
-        className="widget widget-search"
-        data-aos="fade-up"
+        className="search-filter-inner"
+        data-aos="zoom-out-down"
         data-aos-duration={1500}
         data-aos-offset={50}
       >
-        <form className="default-search-form">
+        {/* Check-in Date */}
+        <div className="filter-item clearfix">
+          <div className="icon">
+            <i className="fal fa-calendar-alt" />
+          </div>
+          <span className="title">Check-in Date</span>
           <input
-            type="text"
-            placeholder="Search destinations..."
-            value={localSearch}
-            onChange={handleSearchInput}
+            type="date"
+            name="checkin"
+            className="form-control"
+            value={checkInDate}
+            min={getTomorrow()}
+            onChange={(e) => setCheckInDate(e.target.value)}
           />
-          <button type="submit" className="searchbutton far fa-search" />
-        </form>
+        </div>
+
+        {/* Check-out Date */}
+        <div className="filter-item clearfix">
+          <div className="icon">
+            <i className="fal fa-calendar-alt" />
+          </div>
+          <span className="title">Check-out Date</span>
+          <input
+            type="date"
+            name="checkout"
+            className="form-control"
+            value={checkOutDate}
+            min={
+              checkInDate
+                ? new Date(
+                    new Date(checkInDate).setDate(
+                      new Date(checkInDate).getDate() + 1
+                    )
+                  )
+                    .toISOString()
+                    .split("T")[0]
+                : getTomorrow()
+            }
+            onChange={(e) => setCheckOutDate(e.target.value)}
+          />
+        </div>
+
+        {/* Adult Counter */}
+        <div className="filter-item clearfix">
+          <div className="icon">
+            <i className="fal fa-user" />
+          </div>
+          <span className="title">Guests</span>
+          <div
+            className="counter"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <button
+              onClick={() => decrement(setGuestCount)}
+              style={{
+                padding: "4px 10px",
+                fontSize: "16px",
+                background: "#eee",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              -
+            </button>
+            <span style={{ minWidth: "20px", textAlign: "center" }}>
+              {GuestCount}
+            </span>
+            <button
+              onClick={() => increment(setGuestCount)}
+              style={{
+                padding: "4px 10px",
+                fontSize: "16px",
+                background: "#eee",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        {/* Room Counter */}
+        <div className="filter-item clearfix">
+          <div className="icon">
+            <i className="fal fa-door-open" />
+          </div>
+          <span className="title">Rooms</span>
+          <div
+            className="counter"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <button
+              onClick={() => decrement(setRoomCount)}
+              style={{
+                padding: "4px 10px",
+                fontSize: "16px",
+                background: "#eee",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              -
+            </button>
+            <span style={{ minWidth: "20px", textAlign: "center" }}>
+              {roomCount}
+            </span>
+            <button
+              onClick={() => increment(setRoomCount)}
+              style={{
+                padding: "4px 10px",
+                fontSize: "16px",
+                background: "#eee",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        {/* Search Button */}
+        <div className="search-button">
+          <Link href={searchParams}>
+            <button className="theme-btn">
+              <span data-hover="Search">Search</span>
+              <i className="far fa-search" />
+            </button>
+          </Link>
+        </div>
       </div>
-      <select>
-        <option value="default" selected="">
-          Filter by Price
-        </option>
-        <option value="<100000">&lt; Rp100.000</option>
-        <option value="<300000">&lt; Rp300.000</option>
-        <option value="<500000">&lt; Rp500.000</option>
-        <option value="<1000000">&lt; Rp1.000.000</option>
-        <option value="<2000000">&lt; Rp2.000.000</option>
-        <option value="<5000000">&lt; Rp5.000.000</option>
-      </select>
-      <select>
-        <option value="default" selected="">
-          By Reviews
-        </option>
-        <option value="1-star">1 Star</option>
-        <option value="2-star">2 Star</option>
-        <option value="3-star">3 Star</option>
-        <option value="4-star">4 Star</option>
-        <option value="5-star">5 Star</option>
-      </select>
-      <select>
-        <option value="default" selected="">
-          Short By
-        </option>
-        <option value="new">Newness</option>
-        <option value="old">Oldest</option>
-        <option value="hight-to-low">High To Low</option>
-        <option value="low-to-high">Low To High</option>
-      </select>
     </div>
   );
-}
+};
+
+export default SearchFilter;

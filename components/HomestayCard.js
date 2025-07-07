@@ -13,6 +13,7 @@ const HomestayCard = ({
   price = 0,
   rating = 5,
   image = "",
+  queryString,
 }) => {
   const [isLiked, setIsLiked] = useState(false);
 
@@ -92,7 +93,7 @@ const HomestayCard = ({
               <span>{price}</span>/person
             </span>
             <Link
-              href={`/accomodation/${slug}`}
+              href={`/accommodation/${slug}?${queryString}`}
               className="theme-btn style-two style-three"
             >
               <span data-hover="Book Now">Book Now</span>

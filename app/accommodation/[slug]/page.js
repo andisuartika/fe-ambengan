@@ -1,11 +1,15 @@
+"use client";
 import ReveloLayout from "@/layout/ReveloLayout";
 import Link from "next/link";
 import RoomCardSlider from "@/components/RoomCardSlider";
+import { useSearchParams } from "next/navigation";
 
 export default async function HomestayDetailPage({ params }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const url = `${baseUrl}/homestay?slug=${params.slug}`;
-  console.log("Fetching homestay from:", url);
+
+  const searchParams = useSearchParams();
+  const queryString = searchParams.toString();
 
   try {
     const res = await fetch(`${baseUrl}/homestay?slug=${params.slug}`, {
@@ -330,7 +334,7 @@ export default async function HomestayDetailPage({ params }) {
 
                 {homestay.roomTypes.map((room, index) => (
                   <div key={room.id || index} className="mb-4">
-                    <RoomCardSlider room={room} />
+                    <RoomCardSlider room={room} queryString={queryString} />
                   </div>
                 ))}
 

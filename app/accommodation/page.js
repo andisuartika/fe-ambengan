@@ -1,11 +1,15 @@
 "use client";
+
 import Banner from "@/components/Banner";
 import { formatRupiah } from "@/utility/formatters";
 import ReveloLayout from "@/layout/ReveloLayout";
-import Link from "next/link";
 import HomestayCard from "@/components/HomestayCard";
+import { useRouter, useSearchParams } from "next/navigation";
+
 import { useEffect, useState } from "react";
+
 const page = () => {
+  const router = useRouter();
   const [homestays, setHomestays] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -76,7 +80,121 @@ const page = () => {
     }
   };
 
+  const searchParams = useSearchParams();
+  const queryString = searchParams.toString();
+
   useEffect(() => {
+    const checkin = searchParams.get("checkin");
+    const checkout = searchParams.get("checkout");
+    const guest = searchParams.get("guest");
+    const room = searchParams.get("room");
+
+    const isMissingParams = !checkin || !checkout || !guest || !room;
+
+    if (isMissingParams) {
+      const today = new Date();
+      const checkinDate = new Date(today);
+      checkinDate.setDate(today.getDate() + 1);
+
+      const checkoutDate = new Date(today);
+      checkoutDate.setDate(today.getDate() + 2);
+
+      const formatDate = (d) => d.toISOString().split("T")[0];
+
+      const query = new URLSearchParams({
+        checkin: formatDate(checkinDate),
+        checkout: formatDate(checkoutDate),
+        guest: "1",
+        room: "1",
+      });
+
+      router.replace(`/accommodation?${query.toString()}`);
+    }
+  }, [searchParams, router]);
+
+  useEffect(() => {
+    const fetchHomestays = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+        const village = process.env.NEXT_PUBLIC_VILLAGE_CODE;
+        const destUrl = `${baseUrl}/homestays?village=${village}`;
+
+        const response = await fetch(destUrl);
+        if (!response.ok) throw new Error("Failed to fetch destination");
+
+        const apiData = await response.json();
+        const homestaysArray = apiData.data || [];
+
+        const transformedData = homestaysArray.map((item, index) => {
+          // mapping kamu tetap di sini
+          return {
+            id: item.id || index,
+            title: item.name,
+            manager: item.manager.name,
+            slug: item.slug || item.name.toLowerCase().replace(/\s+/g, "-"),
+            location: item.address,
+            description: item.description,
+            category: item.category,
+            price: item.roomTypes?.length
+              ? formatRupiah(
+                  Math.min(
+                    ...item.roomTypes.map((rt) => {
+                      const active = rt.active_prices;
+                      if (active?.length) {
+                        return Math.min(...active.map((ap) => ap.price));
+                      }
+                      return parseFloat(rt.price) || Infinity;
+                    })
+                  )
+                )
+              : "Free",
+            priceValue: item.roomTypes?.length
+              ? Math.min(
+                  ...item.roomTypes.map((rt) => {
+                    const active = rt.active_prices;
+                    if (active?.length) {
+                      return Math.min(...active.map((ap) => ap.price));
+                    }
+                    return parseFloat(rt.price) || Infinity;
+                  })
+                )
+              : 0,
+            rating: Math.min(Math.max(parseInt(item.rating || 5), 1), 5),
+            image: item.thumbnail,
+          };
+        });
+
+        // Ambil param
+        const params = new URLSearchParams(window.location.search);
+        const checkin = params.get("checkin");
+        const checkout = params.get("checkout");
+        const guest = parseInt(params.get("guest") || "0");
+        const room = parseInt(params.get("room") || "0");
+
+        // Kalau tidak ada param → tampilkan semua
+        const shouldFilter = checkin && checkout && guest && room;
+
+        // const filteredData = shouldFilter
+        //   ? transformedData.filter((item) => {
+        //       // contoh filter berdasarkan jumlah roomTypes
+        //       return item.roomTypes?.length >= room;
+        //     })
+        //   : transformedData;
+
+        const filteredData = shouldFilter ? transformedData : transformedData;
+
+        setHomestays(filteredData);
+      } catch (err) {
+        setError("Failed to load homestays. Please try again.");
+        console.error("Fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchHomestays();
   }, []);
 
@@ -119,6 +237,7 @@ const page = () => {
                       <HomestayCard
                         key={homestay.id}
                         {...homestay}
+                        queryString={queryString}
                         aosDelay={index * 100}
                       />
                     ))}

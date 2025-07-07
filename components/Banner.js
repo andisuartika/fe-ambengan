@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Fragment } from "react";
-import SearchFilter from "./SearchFilter";
+import HomestayFilter from "./HomestayFilter";
 
-const Banner = ({ pageTitle, pageName, image }) => {
+const Banner = ({ pageTitle, pageName, image, search }) => {
   return (
     <Fragment>
       <section
@@ -38,6 +38,7 @@ const Banner = ({ pageTitle, pageName, image }) => {
           </div>
         </div>
       </section>
+      {search && <HomestayFilter />}
     </Fragment>
   );
 };
