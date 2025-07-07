@@ -368,7 +368,7 @@ const page = async () => {
                 <span className="category">Homestay</span>
                 <h2>Local Charm: Discover Our Homestays </h2>
                 <Link
-                  href="/accomodation"
+                  href="/accommodation"
                   className="theme-btn style-two bgc-secondary"
                 >
                   <span data-hover="Explore Homestays">Explore Homestays</span>
