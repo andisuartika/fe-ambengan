@@ -402,7 +402,7 @@ export default async function DestinationDetailPage({ params }) {
                     <ul className="list-style-one">
                       <li>
                         <i className="far fa-user" />{" "}
-                        <a>{destination.manager.name}</a>
+                        <span>{destination.manager.name}</span>
                       </li>
                       <li>
                         <i className="far fa-envelope" />{" "}

@@ -319,6 +319,7 @@ export default function ClientPage() {
                         <li key={i}>
                           <img
                             src={facility.icon}
+                            alt={facility.name}
                             width="20"
                             color="white"
                             className="mx-2"

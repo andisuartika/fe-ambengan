@@ -314,7 +314,7 @@ export default function ClientPage({ params }) {
                   <ul className="list-style-one">
                     <li>
                       <i className="far fa-user" />{" "}
-                      <a>{homestay.manager.name}</a>
+                      <span>{homestay.manager.name}</span>
                     </li>
                     <li>
                       <i className="far fa-envelope" />{" "}

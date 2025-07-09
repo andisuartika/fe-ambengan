@@ -283,7 +283,7 @@ export default async function TourDetailPage({ params }) {
                   <h5 className="widget-title">Need Help?</h5>
                   <ul className="list-style-one">
                     <li>
-                      <i className="far fa-user" /> <a>{tour.manager.name}</a>
+                      <i className="far fa-user" /> <span>{tour.manager.name}</span>
                     </li>
                     <li>
                       <i className="far fa-envelope" />{" "}
