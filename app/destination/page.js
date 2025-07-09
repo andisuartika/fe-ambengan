@@ -1,55 +1,42 @@
-"use client";
-import Banner from "@/components/Banner";
-import DestinationList from "@/components/DestinationList";
-import DestinationSidebar from "@/components/DestinationSidebar";
 import ReveloLayout from "@/layout/ReveloLayout";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-const page = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All Destinations");
-  const [categories, setCategories] = useState([]);
+import DestinationClient from "./DestinationClient";
 
-  // Handle search change
-  const handleSearch = (search) => {
-    setSearchTerm(search);
-  };
+export const metadata = {
+  title: "Ambengan Destinations | Explore Hidden Gems in Buleleng",
+  description:
+    "Browse through amazing destinations in Ambengan Village, from natural waterfalls to cultural heritage spots. Find your perfect travel experience.",
+  keywords: [
+    "ambengan",
+    "destination",
+    "waterfalls",
+    "forest",
+    "desa wisata",
+    "buleleng",
+    "bali",
+  ],
+  authors: [{ name: "Best Desta Team" }],
+  openGraph: {
+    title: "Ambengan Destinations | Explore Hidden Gems",
+    description:
+      "Discover top destinations in Ambengan Village, including eco-tourism, culture, and nature.",
+    url: "https://ambengan-village.vercel.app/destination",
+    siteName: "Ambengan Village",
+    images: [
+      {
+        url: "/public/assets/images/banner/destination.png",
+        width: 1200,
+        height: 630,
+        alt: "Ambengan Destination Page",
+      },
+    ],
+    type: "website",
+  },
+};
 
-  // Handle category selection
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category.name);
-  };
-
+export default function DestinationPage() {
   return (
     <ReveloLayout>
-      <Banner
-        pageTitle={"Ambengan Village"}
-        pageName={"Destination List"}
-        image={"assets/images/banner/destination.png"}
-      />
-      {/* Destination List Area start */}
-      <section className="tour-list-page py-100 rel z-1">
-        <div className="container">
-          <div className="row">
-            <DestinationSidebar
-              search={searchTerm}
-              onSearchChange={handleSearch}
-              onCategorySelect={handleCategorySelect}
-              selectedCategory={selectedCategory}
-              categories={categories}
-            />
-            <div className="col-lg-9">
-              {/* End Filter */}
-              <DestinationList
-                selectedCategory={selectedCategory}
-                searchTerm={searchTerm}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* Tour List Area end */}
+      <DestinationClient />
     </ReveloLayout>
   );
-};
-export default page;
+}

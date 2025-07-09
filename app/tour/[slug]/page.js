@@ -1,26 +1,64 @@
 import ReveloLayout from "@/layout/ReveloLayout";
-import { Accordion } from "react-bootstrap";
+import { formatRupiah } from "@/utility/formatters";
+import { notFound } from "next/navigation";
+import Link from "next/link";
 import TourForm from "@/components/TourForm";
 import TourDestinationCard from "@/components/TourDestinationCard";
-import Link from "next/link";
 
-export default async function TourDetailPage({ params }) {
+// ✅ Dynamic Metadata for SEO
+export async function generateMetadata({ params }) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/tour?slug=${params.slug}`,
-    {
-      cache: "no-store",
-    }
+    { cache: "no-store" }
   );
 
   if (!res.ok) {
-    return notFound(); // 404 fallback
+    return {
+      title: "Tour Not Found | Ambengan Village",
+      description: "The requested tour could not be found.",
+    };
   }
 
   const json = await res.json();
   const tour = json.data;
 
-  const destinationsArray = tour.destinations || [];
+  return {
+    title: `${tour.name} | Ambengan Village Tour`,
+    description:
+      tour.description?.replace(/<[^>]+>/g, "").slice(0, 160) ||
+      "Explore exciting tours in Ambengan Village.",
+    openGraph: {
+      title: `${tour.name} | Ambengan Village Tour`,
+      description:
+        tour.description?.replace(/<[^>]+>/g, "").slice(0, 160) ||
+        "Explore exciting tours in Ambengan Village.",
+      url: `https://ambengan-village.vercel.app/tour/${tour.slug}`,
+      type: "article",
+      images: [
+        {
+          url: tour.thumbnail || "/images/default-tour.jpg",
+          width: 1200,
+          height: 630,
+          alt: `Image of ${tour.name}`,
+        },
+      ],
+    },
+  };
+}
 
+// ✅ Main Page
+export default async function TourDetailPage({ params }) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/tour?slug=${params.slug}`,
+    { cache: "no-store" }
+  );
+
+  if (!res.ok) return notFound();
+
+  const json = await res.json();
+  const tour = json.data;
+
+  const destinationsArray = tour.destinations || [];
   const transformedData = destinationsArray.map((item, index) => ({
     id: item.id || index,
     title: item.name,
@@ -40,31 +78,21 @@ export default async function TourDetailPage({ params }) {
   const allGalleries = tour?.destinations?.flatMap(
     (dest) => dest.galleries || []
   );
-  const shuffled = [...allGalleries].sort(() => 0.5 - Math.random());
-  const randomGalleries = shuffled.slice(0, 5);
+  const randomGalleries = [...allGalleries]
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 5);
+
   return (
     <ReveloLayout>
+      {/* Banner */}
       <section className="page-banner-two rel z-1">
         <div className="container-fluid">
           <hr className="mt-0" />
           <div className="container">
             <div className="banner-inner pt-15 pb-25">
-              <h2
-                className="page-title mb-10"
-                data-aos="fade-left"
-                data-aos-duration={1500}
-                data-aos-offset={50}
-              >
-                {tour.name}
-              </h2>
+              <h2 className="page-title mb-10">{tour.name}</h2>
               <nav aria-label="breadcrumb">
-                <ol
-                  className="breadcrumb justify-content-center mb-20"
-                  data-aos="fade-right"
-                  data-aos-delay={200}
-                  data-aos-duration={1500}
-                  data-aos-offset={50}
-                >
+                <ol className="breadcrumb justify-content-center mb-20">
                   <li className="breadcrumb-item">
                     <Link href="/">Home</Link>
                   </li>
@@ -75,102 +103,41 @@ export default async function TourDetailPage({ params }) {
           </div>
         </div>
       </section>
-      {/* Page Banner End */}
-      {/* Tour Gallery start */}
+
+      {/* Gallery */}
       <div className="destination-gallery">
         <div className="container-fluid">
           {randomGalleries.length > 0 && (
             <div className="mt-12 mb-10">
               <h2 className="text-2xl font-semibold mb-6">Gallery</h2>
               <div className="row g-4 justify-content-center">
-                {/* Kolom 1 */}
-                <div className="col-lg-4 col-md-6">
-                  {randomGalleries[0] && (
-                    <div className="gallery-item mb-4">
-                      <img
-                        src={randomGalleries[0].image}
-                        alt={`Gallery 1`}
-                        className="w-full rounded"
-                        style={{
-                          width: "100%",
-                          height: "300px",
-                          objectFit: "cover",
-                        }}
-                      />
-                    </div>
-                  )}
-                  {randomGalleries[3] && (
-                    <div className="gallery-item">
-                      <img
-                        src={randomGalleries[3].image}
-                        alt={`Gallery 4`}
-                        className="w-full rounded"
-                        style={{
-                          width: "100%",
-                          height: "300px",
-                          objectFit: "cover",
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
-
-                {/* Kolom 2 */}
-                <div className="col-lg-4 col-md-6">
-                  {randomGalleries[1] && (
-                    <div className="gallery-item">
-                      <img
-                        src={randomGalleries[1].image}
-                        alt={`Gallery 2`}
-                        className="w-full rounded"
-                        style={{
-                          width: "100%",
-                          height: "620px",
-                          objectFit: "cover",
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
-
-                {/* Kolom 3 */}
-                <div className="col-lg-4 col-md-6">
-                  {randomGalleries[2] && (
-                    <div className="gallery-item mb-4">
-                      <img
-                        src={randomGalleries[2].image}
-                        alt={`Gallery 3`}
-                        className="w-full rounded"
-                        style={{
-                          width: "100%",
-                          height: "300px",
-                          objectFit: "cover",
-                        }}
-                      />
-                    </div>
-                  )}
-                  {randomGalleries[4] && (
-                    <div className="gallery-item">
-                      <img
-                        src={randomGalleries[4].image}
-                        alt={`Gallery 5`}
-                        className="w-full rounded"
-                        style={{
-                          width: "100%",
-                          height: "300px",
-                          objectFit: "cover",
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
-
-                {/* Tombol lihat semua */}
+                {[0, 1, 2, 3, 4].map(
+                  (i) =>
+                    randomGalleries[i] && (
+                      <div
+                        className={`col-lg-${i === 1 ? 4 : 4} col-md-6`}
+                        key={i}
+                      >
+                        <div className="gallery-item mb-4">
+                          <img
+                            src={randomGalleries[i].image}
+                            alt={`Gallery ${i + 1}`}
+                            className="w-full rounded"
+                            style={{
+                              width: "100%",
+                              height: i === 1 ? "620px" : "300px",
+                              objectFit: "cover",
+                            }}
+                          />
+                        </div>
+                      </div>
+                    )
+                )}
                 {allGalleries.length > 5 && (
                   <div className="col-lg-12 text-center mt-6">
                     <Link
                       href={`/gallery/${tour.code}`}
-                      className="theme-btn style-two bgc-secondary inline-block px-6 py-3 rounded-lg transition-all"
+                      className="theme-btn style-two bgc-secondary inline-block px-6 py-3 rounded-lg"
                     >
                       <span data-hover="See All Photos">See All Photos</span>
                       <i className="fal fa-arrow-right ml-2" />
@@ -183,18 +150,12 @@ export default async function TourDetailPage({ params }) {
         </div>
       </div>
 
-      {/* Tour Gallery End */}
-      {/* Tour Header Area start */}
+      {/* Header Section */}
       <section className="tour-header-area pt-70 rel z-1">
         <div className="container">
           <div className="row justify-content-between">
             <div className="col-xl-6 col-lg-7">
-              <div
-                className="tour-header-content mb-15"
-                data-aos="fade-left"
-                data-aos-duration={1500}
-                data-aos-offset={50}
-              >
+              <div className="tour-header-content mb-15">
                 <span className="location d-inline-block mb-10">
                   <i className="fal fa-map-marker-alt" /> Ambengan, Buleleng,
                   Bali
@@ -203,33 +164,28 @@ export default async function TourDetailPage({ params }) {
                   <h2>{tour.name}</h2>
                 </div>
                 <div className="ratting">
-                  {Array.from({ length: 5 }).map((_, i) => {
-                    const index = i + 1;
-                    if (tour.rating >= index) {
-                      return <i key={i} className="fas fa-star" />;
-                    } else if (tour.rating >= index - 0.5) {
-                      return <i key={i} className="fas fa-star-half-alt" />;
-                    } else {
-                      return <i key={i} className="far fa-star" />;
-                    }
-                  })}
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <i
+                      key={i}
+                      className={
+                        tour.rating >= i + 1
+                          ? "fas fa-star"
+                          : tour.rating >= i + 0.5
+                          ? "fas fa-star-half-alt"
+                          : "far fa-star"
+                      }
+                    />
+                  ))}
                 </div>
               </div>
             </div>
-            <div
-              className="col-xl-4 col-lg-5 text-lg-end"
-              data-aos="fade-right"
-              data-aos-duration={1500}
-              data-aos-offset={50}
-            >
+            <div className="col-xl-4 col-lg-5 text-lg-end">
               <div className="tour-header-social mb-10">
                 <a href="#">
-                  <i className="far fa-share-alt" />
-                  Share tours
+                  <i className="far fa-share-alt" /> Share tours
                 </a>
                 <a href="#">
-                  <i className="fas fa-heart bgc-secondary" />
-                  Wish list
+                  <i className="fas fa-heart bgc-secondary" /> Wish list
                 </a>
               </div>
             </div>
@@ -237,8 +193,8 @@ export default async function TourDetailPage({ params }) {
           <hr className="mt-50 mb-70" />
         </div>
       </section>
-      {/* Tour Header Area end */}
-      {/* Tour Details Area start */}
+
+      {/* Detail Content */}
       <section className="tour-details-page pb-100">
         <div className="container">
           <div className="row">
@@ -249,7 +205,6 @@ export default async function TourDetailPage({ params }) {
                   className="tour-description prose max-w-none"
                   dangerouslySetInnerHTML={{ __html: tour.description }}
                 />
-                {/* <p>{tour.description.replace(/<\/?[^>]+(>|$)/g, "")} </p> */}
                 <div className="row pb-55">
                   <div className="col-md-6">
                     <div className="tour-include-exclude mt-30">
@@ -265,6 +220,7 @@ export default async function TourDetailPage({ params }) {
                   </div>
                 </div>
               </div>
+
               <h3>Tour Destinations</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {transformedData.map((destination, index) => (
@@ -275,15 +231,11 @@ export default async function TourDetailPage({ params }) {
                   />
                 ))}
               </div>
+
               <h3>Clients Comments</h3>
               <div className="comments mt-30 mb-60">
                 {tour.reviews.map((item, index) => (
-                  <div
-                    className="comment-body"
-                    data-aos="fade-up"
-                    data-aos-duration={1500}
-                    data-aos-offset={50}
-                  >
+                  <div className="comment-body" key={index}>
                     <div className="author-thumb">
                       <img
                         src={`https://xsgames.co/randomusers/avatar.php?g=male&seed=${index}`}
@@ -293,18 +245,18 @@ export default async function TourDetailPage({ params }) {
                     <div className="content">
                       <h6>{item.name}</h6>
                       <div className="ratting">
-                        {Array.from({ length: 5 }).map((_, i) => {
-                          const index = i + 1;
-                          if (item.rating >= index) {
-                            return <i key={i} className="fas fa-star" />;
-                          } else if (item.rating >= index - 0.5) {
-                            return (
-                              <i key={i} className="fas fa-star-half-alt" />
-                            );
-                          } else {
-                            return <i key={i} className="far fa-star" />;
-                          }
-                        })}
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <i
+                            key={i}
+                            className={
+                              item.rating >= i + 1
+                                ? "fas fa-star"
+                                : item.rating >= i + 0.5
+                                ? "fas fa-star-half-alt"
+                                : "far fa-star"
+                            }
+                          />
+                        ))}
                       </div>
                       <span className="time">
                         {new Date(item.created_at).toLocaleDateString("id-ID", {
@@ -319,23 +271,15 @@ export default async function TourDetailPage({ params }) {
                 ))}
               </div>
             </div>
+
+            {/* Sidebar */}
             <div className="col-lg-4 col-md-8 col-sm-10 rmt-75">
               <div className="blog-sidebar tour-sidebar">
-                <div
-                  className="widget widget-booking"
-                  data-aos="fade-up"
-                  data-aos-duration={1500}
-                  data-aos-offset={50}
-                >
+                <div className="widget widget-booking">
                   <h5 className="widget-title">Tour Booking</h5>
                   <TourForm rates={tour.active_prices} tour={tour.slug} />
                 </div>
-                <div
-                  className="widget widget-contact"
-                  data-aos="fade-up"
-                  data-aos-duration={1500}
-                  data-aos-offset={50}
-                >
+                <div className="widget widget-contact">
                   <h5 className="widget-title">Need Help?</h5>
                   <ul className="list-style-one">
                     <li>
@@ -360,7 +304,6 @@ export default async function TourDetailPage({ params }) {
           </div>
         </div>
       </section>
-      {/* Tour Details Area end */}
     </ReveloLayout>
   );
 }

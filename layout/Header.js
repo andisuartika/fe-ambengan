@@ -10,11 +10,11 @@ const Menu = () => {
       <Accordion>
         <div className="navbar-header">
           <div className="mobile-logo">
-            <Link href="/">
+            <Link href="/" aria-label="Go to homepage">
               <img
                 src="assets/images/logos/logo-dark.png"
-                alt="Logo"
-                title="Logo"
+                alt="Ambengan Village Logo"
+                title="Ambengan Village"
               />
             </Link>
           </div>
@@ -36,22 +36,34 @@ const Menu = () => {
         >
           <ul className="navigation clearfix">
             <li>
-              <Link href="/">Home</Link>
+              <Link href="/" aria-label="Go to homepage">
+                Home
+              </Link>
             </li>
             <li>
-              <Link href="/about">About</Link>
+              <Link href="/about" aria-label="Go to about">
+                About
+              </Link>
             </li>
             <li>
-              <Link href="/destination">Destinations</Link>
+              <Link href="/destination" aria-label="Go to destination">
+                Destinations
+              </Link>
             </li>
             <li>
-              <Link href="/tour">Tour</Link>
+              <Link href="/tour" aria-label="Go to tour">
+                Tour
+              </Link>
             </li>
             <li>
-              <Link href="/accommodation">Accommodation</Link>
+              <Link href="/accommodation" aria-label="Go to accommodation">
+                Accommodation
+              </Link>
             </li>
             <li>
-              <Link href="/gallery">Gallery</Link>
+              <Link href="/gallery" aria-label="Go to gallery">
+                Gallery
+              </Link>
             </li>
           </ul>
         </Accordion.Collapse>

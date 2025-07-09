@@ -2,6 +2,48 @@ import ReveloLayout from "@/layout/ReveloLayout";
 import BookingForm from "@/components/BookingForm";
 
 import Link from "next/link";
+export async function generateMetadata({ params }) {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${baseUrl}/destination?slug=${params.slug}`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    return {
+      title: "Destination Not Found | Ambengan Village",
+      description: "The requested destination could not be found.",
+    };
+  }
+
+  const json = await res.json();
+  const destination = json.data;
+
+  return {
+    title: `${destination.name} | Destination in Ambengan Village`,
+    description:
+      destination.description?.replace(/<[^>]+>/g, "").slice(0, 160) ||
+      "Explore unique natural and cultural destinations in Ambengan Village.",
+    openGraph: {
+      title: `${destination.name} | Ambengan Destination`,
+      description:
+        destination.description?.replace(/<[^>]+>/g, "").slice(0, 160) ||
+        "Explore top-rated tourist spots in Ambengan.",
+      url: `https://ambengan-village.vercel.app/destination/${destination.slug}`,
+      type: "article",
+      images: [
+        {
+          url:
+            destination.galleries?.[0]?.image ||
+            destination.galleries?.[0]?.url ||
+            "/images/default-destination.jpg",
+          width: 1200,
+          height: 630,
+          alt: `Image of ${destination.name}`,
+        },
+      ],
+    },
+  };
+}
 
 export default async function DestinationDetailPage({ params }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;

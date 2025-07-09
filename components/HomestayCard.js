@@ -75,7 +75,7 @@ const HomestayCard = ({
             </div>
           </div>
           <h5>
-            <Link href={`/accomodation/${slug}`}>{title}</Link>
+            <Link href={`/accommodation/${slug}`}>{title}</Link>
           </h5>
           <p className="line-clamp-description">
             {description.replace(/<\/?[^>]+(>|$)/g, "")}
