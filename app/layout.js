@@ -12,6 +12,9 @@ import "rc-slider/assets/index.css";
 export const metadata = {
   title: "Ambengan - Desa Wisata",
   description: "Booking Engine System - Desa Wisata",
+  icons: {
+    icon: "assets/images/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }) {
