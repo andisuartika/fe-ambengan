@@ -27,28 +27,38 @@ export default function RoomCard({ room, queryString }) {
   const guest = searchParams.get("guest");
   const quantity = searchParams.get("room");
 
-  //handle booking
+  // handle booking
   const handleBooking = () => {
     if (!room?.code) {
       console.warn("Room code tidak tersedia.");
       return;
     }
 
-    const query = new URLSearchParams({
+    // 1) Buat array items payload
+    const itemsPayload = [
+      {
+        roomType: room.code, // atau ambil array bookingItems kalau ada beberapa
+        quantity: quantity,
+      },
+    ];
+
+    // 2) Buat URLSearchParams dan set param dasar
+    const params = new URLSearchParams({
       type: "homestay",
-      code: room.code,
-      quantity: quantity.toString(),
       checkIn: checkin,
       checkOut: checkout,
-      guest: guest,
+      guest: guest.toString(),
+      // quantity total (opsional, backend bisa hitung dari itemsPayload)
+      quantity: quantity.toString(),
     });
 
-    //go to url booking best desta
+    // 3) Tambahkan items sebagai JSON‐encoded param
+    params.set("items", JSON.stringify(itemsPayload));
+
+    // 4) Buka di tab baru
     const url = `${
       process.env.NEXT_PUBLIC_URL
-    }/booking/homestay?${query.toString()}`;
-
-    // 👇 Buka di tab baru dengan keamanan tambahan
+    }/booking/homestay?${params.toString()}`;
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
